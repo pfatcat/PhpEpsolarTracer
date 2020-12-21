@@ -78,7 +78,7 @@ function build_json_data($real_time_data){
 				  "load_current" => $load_current);
 
 	// echo json_encode($data);
-	json_encode($data);
+	return json_encode($data);
 }
 
 function post_to_firebase($content){
