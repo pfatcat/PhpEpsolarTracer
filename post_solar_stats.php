@@ -57,20 +57,31 @@
  
 require_once 'PhpEpsolarTracer.php';
 
-function post_to_firebase($real_time_data){
-
+function build_json_data($real_time_data){
 	$timestamp = date("c");
 	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
 
 	$array_voltage = $real_time_data[0];
+	$array_current = $real_time_data[1];
 	$battery_voltage = $real_time_data[3];
+	$battery_charging_current = $real_time_data[4];
+	$load_voltage = $real_time_data[6];
+	$load_current = $real_time_data[7];
 
 	$data = array('timestamp' => $timestamp, 
 				  'local_time' => $local_time->format('Y-m-d H:i:s'), 
 				  'array_voltage' => $array_voltage, 
-				  'battery_voltage' => $battery_voltage);
+				  'array_current'  => $array_current,
+				  'battery_voltage' => $battery_voltage,
+				  'battery_charging_current' => $battery_charging_current,
+				  "load_voltage" => $load_voltage,
+				  "load_current" => $load_current);
 
 	# echo json_encode($data);
+	json_encode($data);
+}
+
+function post_to_firebase($content){
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
 
@@ -79,7 +90,7 @@ function post_to_firebase($real_time_data){
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
 			'method'  => 'POST',
-			'content' => json_encode($data),
+			'content' => $content,
 			'ignore_errors' => true
 		)
 	);
@@ -101,7 +112,10 @@ if ($tracer->getRealtimeData()) {
 
 	post_to_firebase($tracer->realtimeData);
 	} 
-else print "Cannot get RealTime Data\n";
+else {
+	print "Cannot get RealTime Data\n";
+	post_to_firebase("Cannot get RealTime Data");
+}
 
 
 // if ($tracer->getInfoData()) {
