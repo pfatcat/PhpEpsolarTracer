@@ -63,12 +63,19 @@ function post_to_firebase($real_time_data){
 	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
 
 
-	echo implode(" ",$real_time_data) . "\n";
+	// echo implode(" ",$real_time_data) . "\n";
 	// print "voltage: " . $tracer->realtimeData[3] ."\n";
 	$array_voltage = $real_time_data[0];
 	$battery_voltage = $real_time_data[3];
-	$data = '{"timestamp": "' . $timestamp . '", "local_time": "' . $local_time->format('Y-m-d H:i:s')  . '", "battery_voltage": "' . $battery_voltage . '", "array_voltage": "' . $array_voltage . '"}';
-	print $data;
+	// $data = '{"timestamp": "' . $timestamp . '", "local_time": "' . $local_time->format('Y-m-d H:i:s')  . '", "battery_voltage": "' . $battery_voltage . '", "array_voltage": "' . $array_voltage . '"}';
+	// print $data;
+
+	$data = array('timestamp' => $timestamp, 
+				  'local_time' => $local_time->format('Y-m-d H:i:s'), 
+				  'array_voltage' => $array_voltage, 
+				  'battery_voltage' => $battery_voltage);
+
+	echo json_encode($data);
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
 
@@ -77,7 +84,7 @@ function post_to_firebase($real_time_data){
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
 			'method'  => 'POST',
-			'content' => $data,
+			'content' => json_encode($data),
 			'ignore_errors' => true
 		)
 	);
@@ -90,6 +97,8 @@ function post_to_firebase($real_time_data){
 	
 	var_dump($result);
 }
+
+post_to_firebase(["wat", "the", "actual", "fuck"]);
 
 $tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 

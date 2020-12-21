@@ -1,0 +1,129 @@
+Info Data
+----------------------------------
+00 Manufacturer: EPsolar Tech co., Ltd
+01 Model: TriRon4210
+02 Version: V01.55+V01.22
+
+Rated Data
+----------------------------------
+00 PV array rated voltage: 100V
+01 PV array rated current: 40A
+02 PV array rated power: 1040W
+03 Battery rated voltage: 24V
+04 Rated charging current: 40A
+05 Rated charging power: 1040W
+06 Charging Mode: 2
+07 Rated load current: 40A
+
+RealTime Data  [1.85,0,0,31.15,0,0,31.15,0.14,4.36,10.93,18.32,18.32,89,0,24,0,1]
+----------------------------------
+00 PV array voltage: 1.85V
+01 PV array current: 0A
+02 PV array power: 0W
+03 Battery voltage: 31.15V
+04 Battery charging current: 0A
+05 Battery charging power: 0W
+06 Load voltage: 31.15V
+07 Load current: 0.14A
+08 Load power: 4.36W
+09 Battery temperature: 10.93°C
+10 Charger temperature: 18.32°C
+11 Heat sink temperature: 18.32°C
+12 Battery SOC: 89%
+13 Remote battery temperature: 0°C
+14 System rated voltage: 24V
+15 Battery status: 0
+16 Equipment status: 1
+
+Statistical Data
+----------------------------------
+00 Max input voltage today: 49.81V
+01 Min input voltage today: 0V
+02 Max battery voltage today: 32.13V
+03 Min battery voltage today: 31.07V
+04 Consumed energy today: 0.1KWH
+05 Consumed energy this month: 1.48KWH
+06 Consumed energy this year: 16.99KWH
+07 Total consumed energy: 16.99KWH
+08 Generated energy today: 0.42KWH
+09 Generated energy this moth: 8.58KWH
+10 Generated energy this year: 176.4KWH
+11 Total generated energy: 176.4KWH
+12 Carbon dioxide reduction: 0.17T
+13 Net battery current: 0A
+14 Battery temperature: 10.92°C
+15 Ambient temperature: 10.92°C
+
+Settings Data
+----------------------------------
+00 Battery type: 0
+01 Battery capacity: 528Ah
+02 Temperature compensation coeff.: 0mV/°C/2V
+03 High voltage disconnect: 32.01V
+04 Charging limit voltage: 32V
+05 Over voltage reconnect: 31.99V
+06 Equalization voltage: 32V
+07 Boost voltage: 32V
+08 Float voltage: 32V
+09 Boost reconnect voltage: 31.99V
+10 Low voltage reconnect: 25V
+11 Under voltage recover: 26V
+12 Under voltage warning: 25.9V
+13 Low voltage disconnect: 24.9V
+14 Discharging limit voltage: 24.9V
+15 Realtime clock (sec): 0
+16 Realtime clock (min): 0
+17 Realtime clock (hour): 0
+18 Realtime clock (day): 0
+19 Realtime clock (month): 20
+20 Realtime clock (year): 40
+21 Equalization charging cycle: 4374 day
+22 Battery temp. warning hi limit: 33.37°C
+23 Battery temp. warning low limit: 0.3°C
+24 Controller temp. hi limit: 65°C
+25 Controller temp. hi limit rec.: 615.36°C
+26 Components temp. hi limit: 85°C
+27 Components temp. hi limit rec.: 75°C
+28 Line impedance: 85mOhm
+29 Night Time Threshold Volt: 75V
+30 Light signal on delay time: 0 min.
+31 Day Time Threshold Volt: 10V
+32 Light signal off delay time: 10 min.
+33 Load controlling mode: 1200
+34 Working time length1 min.: 10
+35 Working time length1 hour: 0
+36 Working time length2 min.: 0
+37 Working time length2 hour: 0
+38 Turn on timing1 sec: 256
+39 Turn on timing1 min: 256
+40 Turn on timing1 hour: 0
+41 Turn off timing1 sec: 0
+42 Turn off timing1 min: 19
+43 Turn off timing1 hour: 0
+44 Turn on timing2 sec: 0
+45 Turn on timing2 min: 6
+46 Turn on timing2 hour: 0
+47 Turn off timing2 sec: 0
+48 Turn off timing2 min: 19
+49 Turn off timing2 hour: 0
+50 Length of night min.: 6
+51 Length of night hour: 0
+52 Battery rated voltage code: 60
+53 Load timing control selection: 5
+54 Default Load On/Off: 3341
+55 Equalize duration: 2 min.
+56 Boost duration: 0 min.
+57 Dischargning percentage: 1%
+58 Charging percentage: 120%
+59 Management mode: 30
+
+Coils Data
+----------------------------------
+00 Manual control the load: 1
+01 Enable load test mode: 0
+02 Force the load on/off: 0
+
+Discrete Data
+----------------------------------
+00 Over temperature inside device: 0
+01 Day/Night: 1
