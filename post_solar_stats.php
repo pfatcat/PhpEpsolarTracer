@@ -109,8 +109,8 @@ $tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 
 
 if ($tracer->getRealtimeData()) {
-
-	post_to_firebase($tracer->realtimeData);
+		$json = build_json_data($tracer->realtimeData);
+		post_to_firebase($json);
 	} 
 else {
 	print "Cannot get RealTime Data\n";
