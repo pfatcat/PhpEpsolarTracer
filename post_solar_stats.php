@@ -25,7 +25,10 @@ require_once 'PhpEpsolarTracer.php';
 
 function post_to_firebase(){
 
-    $data = '{"date": "12/22/2020", "voltage": "44.3v"}';
+	$timestamp = date("c");
+	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
+
+	$data = '{"timestamp": "' . $timestamp . '", "local_time": "' . $local_time->format('Y-m-d H:i:s')  . '", "voltage": "44.3v"}';
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
 
