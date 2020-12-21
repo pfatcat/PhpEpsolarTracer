@@ -63,6 +63,7 @@ function post_to_firebase($voltage){
 	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
 
 	$data = '{"timestamp": "' . $timestamp . '", "local_time": "' . $local_time->format('Y-m-d H:i:s')  . '", "voltage": "' . $voltage . '"}';
+	print $data;
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
 
