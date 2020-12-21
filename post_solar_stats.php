@@ -57,12 +57,17 @@
  
 require_once 'PhpEpsolarTracer.php';
 
-function post_to_firebase($voltage){
+function post_to_firebase($real_time_data){
 
 	$timestamp = date("c");
 	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
 
-	$data = '{"timestamp": "' . $timestamp . '", "local_time": "' . $local_time->format('Y-m-d H:i:s')  . '", "voltage": "' . $voltage . '"}';
+
+	echo implode(" ",$real_time_data) . "\n";
+	// print "voltage: " . $tracer->realtimeData[3] ."\n";
+	$array_voltage = $real_time_data[0];
+	$battery_voltage = $real_time_data[3];
+	$data = '{"timestamp": "' . $timestamp . '", "local_time": "' . $local_time->format('Y-m-d H:i:s')  . '", "battery_voltage": "' . $battery_voltage . '", "array_voltage": "' . $array_voltage . '"}';
 	print $data;
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
@@ -107,10 +112,7 @@ if ($tracer->getRealtimeData()) {
 	print "\nRealTime Data\n";
 	print "----------------------------------\n";
 
-	echo implode(" ",$tracer->realtimeData) . "\n";
-	print "voltage: " . $tracer->realtimeData[3] ."\n";
-
-	post_to_firebase($tracer->realtimeData[3]);
+	post_to_firebase($tracer->realtimeData);
 
 	for ($i = 0; $i < count($tracer->realtimeData); $i++)
 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->realtimeKey[$i].": ".$tracer->realtimeData[$i].$tracer->realtimeSym[$i]."\n";
