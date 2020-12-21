@@ -260,7 +260,8 @@ class PhpEpsolarTracer
 		// $escaped = addcslashes($result, "\0..\37!@\177..\377");
 		// print $escaped."\n";
 		// print preg_replace( '/[^[:print:]]/', '.',$result);
-		$string = preg_replace('/[\f\r]/u', ' - ', $result);
+		#$string = preg_replace('/[\f\r]/u', ' - ', $result);
+		$string = preg_replace('/[\f\r\v]/', ' - ', $result);
 		$string = preg_replace('/[^A-Za-z0-9 _\-\+\&.,]/','',$string)."\n";
 		$this->infoData = explode(" - ",substr($string,1));
 		if (!$result) return 0;

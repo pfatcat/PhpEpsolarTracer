@@ -19,6 +19,9 @@
  *
  * It queries and prints all charger controller's registries
  *
+ * ls /dev/tty*
+ * /dev/ttyACM0
+ * Bus 001 Device 006: ID 04e2:1411 Exar Corp. 
  */
  
 require_once 'PhpEpsolarTracer.php';
@@ -53,7 +56,7 @@ function post_to_firebase(){
 
 post_to_firebase();
 
-$tracer = new PhpEpsolarTracer('/dev/ttyUSB0');
+$tracer = new PhpEpsolarTracer('/dev/ttyACM0');
 
 
 if ($tracer->getInfoData()) {
