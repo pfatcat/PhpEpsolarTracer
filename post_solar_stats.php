@@ -77,11 +77,13 @@ function build_json_data($real_time_data){
 				  "load_voltage" => $load_voltage,
 				  "load_current" => $load_current);
 
-	echo json_encode($data);
+	# echo json_encode($data);
 	json_encode($data);
 }
 
 function post_to_firebase($content){
+
+	print $content;
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
 
