@@ -83,6 +83,7 @@ function build_json_data($real_time_data){
 
 function post_to_firebase($content){
 
+	print "content: ";
 	print $content;
 
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
