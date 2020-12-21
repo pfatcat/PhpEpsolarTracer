@@ -105,7 +105,8 @@ if ($tracer->getRatedData()) {
 if ($tracer->getRealtimeData()) {
 	print "\nRealTime Data\n";
 	print "----------------------------------\n";
-	print $tracer->realtimeData;
+
+	echo implode(" ",$tracer->realtimeData);
 	for ($i = 0; $i < count($tracer->realtimeData); $i++)
 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->realtimeKey[$i].": ".$tracer->realtimeData[$i].$tracer->realtimeSym[$i]."\n";
 		#post_to_firebase(44);
