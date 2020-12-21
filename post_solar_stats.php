@@ -77,7 +77,7 @@ function build_json_data($real_time_data){
 				  "load_voltage" => $load_voltage,
 				  "load_current" => $load_current);
 
-	# echo json_encode($data);
+	// echo json_encode($data);
 	json_encode($data);
 }
 
@@ -112,6 +112,7 @@ $tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 
 if ($tracer->getRealtimeData()) {
 		$json = build_json_data($tracer->realtimeData);
+		echo "json:" . $json;
 		post_to_firebase($json);
 	} 
 else {
