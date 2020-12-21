@@ -19,9 +19,40 @@
  *
  * It queries and prints all charger controller's registries
  *
- * ls /dev/tty*
- * /dev/ttyACM0
+ * lsusb
  * Bus 001 Device 006: ID 04e2:1411 Exar Corp. 
+ * 
+ * ls /dev/tty*
+ * /dev/ttyACM0 <-- this is no bueno
+ * /dev/ttyXRUSB0 <-- should be
+ * 
+
+ * https://github.com/toggio/PhpEpsolarTracer/issues/4
+ * 
+ * 
+ * get Exar USB Serial Driver driver files from: https://github.com/kasbert/epsolar-tracer/tree/master/xr_usb_serial_common-1a
+
+ * sudo apt-get install dkms raspberrypi-kernel-headers  
+ * 	sudo cp -a ../xr_usb_serial_common-1a /usr/src/
+ *	dkms add -m xr_usb_serial_common -v 1a
+ *  dkms build -m xr_usb_serial_common -v 1a
+ *  dkms install -m xr_usb_serial_common -v 1a
+ * 
+	Tips for Debugging
+	------------------
+	* Check that the USB UART is detected by the system
+		# lsusb
+	* Check that the CDC-ACM driver was not installed for the Exar USB UART
+		# ls /dev/tty*
+
+		To remove the CDC-ACM driver and install the driver:
+
+		# rmmod cdc-acm
+		# modprobe -r usbserial
+		# modprobe usbserial
+		# insmod ./xr_usb_serial_common.ko
+
+ *  sudo chmod 666 /dev/ttyUSB0 <- permissions
  */
  
 require_once 'PhpEpsolarTracer.php';
@@ -56,7 +87,7 @@ function post_to_firebase(){
 
 post_to_firebase();
 
-$tracer = new PhpEpsolarTracer('/dev/ttyACM0');
+$tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 
 
 if ($tracer->getInfoData()) {
