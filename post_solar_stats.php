@@ -83,9 +83,6 @@ function build_json_data($real_time_data){
 
 function post_to_firebase($content){
 
-	print "content: ";
-	print $content;
-
 	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
 
 	// use key 'http' even if you send the request to https://...
@@ -113,7 +110,6 @@ $tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 
 if ($tracer->getRealtimeData()) {
 		$json = build_json_data($tracer->realtimeData);
-		echo "json:" . $json;
 		post_to_firebase($json);
 	} 
 else {
