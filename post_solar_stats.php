@@ -83,7 +83,11 @@ function build_json_data($real_time_data){
 
 function post_to_firebase($content){
 
-	$url = "https://cabin-3bebb.firebaseio.com/solar_stats.json";
+	// /20201224.json
+	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
+	$timestamp = $local_time->format('Y-m-d');
+
+	$url = "https://cabin-3bebb.firebaseio.com/solar_stats/" . $timestamp . ".json";
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(
@@ -103,7 +107,6 @@ function post_to_firebase($content){
 	
 	var_dump($result);
 }
-
 
 $tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 
