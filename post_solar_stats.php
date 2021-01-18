@@ -53,6 +53,9 @@
 		# insmod ./xr_usb_serial_common.ko
 
  *  sudo chmod 666 /dev/ttyUSB0 <- permissions
+ * 
+ * GENERATE FIREBASE TOKEN
+ * https://console.firebase.google.com/u/0/project/cabin-3bebb/settings/serviceaccounts/adminsdk
  */
  
 require_once 'PhpEpsolarTracer.php';
@@ -105,9 +108,6 @@ function post_to_firebase($content){
 		print "Error from Firebase:";
 		print $result;
 	}
-
-	print "Response from Firebase:";
-	print $result;
 	
 	var_dump($result);
 }
