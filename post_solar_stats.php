@@ -105,6 +105,9 @@ function post_to_firebase($content){
 		print "Error from Firebase:";
 		print $result;
 	}
+
+	print "Response from Firebase:";
+	print $result;
 	
 	var_dump($result);
 }
