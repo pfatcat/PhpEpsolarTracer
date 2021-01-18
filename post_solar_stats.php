@@ -102,6 +102,7 @@ function post_to_firebase($content){
 	$result = file_get_contents($url, false, $context);
 	if ($result === FALSE) { 
 		/* Handle error */ 
+		print "Error from Firebase:";
 		print $result;
 	}
 	
