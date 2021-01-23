@@ -1,4 +1,5 @@
 <?php
+
 /*
  * PHP EpSolar Tracer Class (PhpEpsolarTracer) v0.9
  *
@@ -80,40 +81,87 @@ function build_json_data($real_time_data){
 				  "load_voltage" => $load_voltage,
 				  "load_current" => $load_current);
 
-	// echo json_encode($data);
 	return json_encode($data);
 }
 
 function post_to_firebase($content){
 
-	// /20201224.json
+	$configs = include('config.php');
+	$auth_token = $configs["auth_token"];
+
+	// /2020-01-24.json
 	$local_time = new DateTime("now", new DateTimeZone('America/Chicago'));
 	$timestamp = $local_time->format('Y-m-d');
 
-	$url = "https://cabin-3bebb.firebaseio.com/solar_stats/" . $timestamp . ".json";
+	$url = "https://cabin-3bebb.firebaseio.com/solar_stats/" . $timestamp . ".json?auth=" . $auth_token;
+
+	$response = http_post($url, $content);
+
+	if (isset($response["error"])){
+		error_log("error posting to firebase, re-authenticating. Error: " . implode(" ", $response), 0);
+		get_auth_token();
+		post_to_firebase($content);
+	}
+	else {
+		print("successfully posted to firebase\r\n");
+		var_dump($response);
+	}
+}
+
+function get_auth_token(){
+
+	$configs = include('config.php');
+	
+	$web_api_key = $configs["web_api_key"];
+	$authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$web_api_key";
+
+	$jsonData = array(
+		'email' => $configs["email"],
+		'password' => $configs["password"],
+		'returnSecureToken' => true
+	);
+	
+	$jsonDataEncoded = json_encode($jsonData);
+
+	$firebase_auth_response = http_post($authUrl, $jsonDataEncoded);
+
+	// write new auth token to config
+	$configs['auth_token'] = $firebase_auth_response["idToken"];
+	file_put_contents('config.php', '<?php return ' . var_export($configs, true) . ';');
+
+}
+
+function http_post($url, $body){
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(
 		'http' => array(
-			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			'header'  => "Content-type: application/json\r\n",
 			'method'  => 'POST',
-			'content' => $content,
+			'content' => $body,
 			'ignore_errors' => true
 		)
 	);
-	$context  = stream_context_create($options);
-	$result = file_get_contents($url, false, $context);
-	if ($result === FALSE) { 
-		/* Handle error */ 
-		print "Error from Firebase:";
-		print $result;
+
+	$context = stream_context_create($options);
+	$response = file_get_contents($url, false, $context);
+
+	if ($response === FALSE) { 
+		error_log("Error in http_post()");
+		error_log("Error: " . $response);
+		return $response;
 	}
-	
-	var_dump($result);
+	else{
+		return json_decode($response, TRUE);
+	}
 }
 
-$tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
+// ************** TESTING **************
+// get_auth_token();
+// $data = array('new' => "example...?");
+// post_to_firebase(json_encode($data));
 
+$tracer = new PhpEpsolarTracer('/dev/ttyXRUSB0');
 
 if ($tracer->getRealtimeData()) {
 		$json = build_json_data($tracer->realtimeData);
@@ -124,56 +172,4 @@ else {
 	post_to_firebase("Cannot get RealTime Data");
 }
 
-
-// if ($tracer->getInfoData()) {
-// 	print "Info Data\n";
-// 	print "----------------------------------\n";
-// 	for ($i = 0; $i < count($tracer->infoData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->infoKey[$i].": ".$tracer->infoData[$i]."\n";
-// 	} else print "Cannot get Info Data\n";
-
-// if ($tracer->getRatedData()) {
-// 	print "Rated Data\n";
-// 	print "----------------------------------\n";
-// 	for ($i = 0; $i < count($tracer->ratedData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->ratedKey[$i].": ".$tracer->ratedData[$i].$tracer->ratedSym[$i]."\n";
-// 	} else print "Cannot get Rated Data\n";
-
-// if ($tracer->getRealtimeData()) {
-// 	print "\nRealTime Data\n";
-// 	print "----------------------------------\n";
-
-// 	post_to_firebase($tracer->realtimeData);
-
-// 	for ($i = 0; $i < count($tracer->realtimeData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->realtimeKey[$i].": ".$tracer->realtimeData[$i].$tracer->realtimeSym[$i]."\n";
-// 	} else print "Cannot get RealTime Data\n";
-
-// if ($tracer->getStatData()) {
-// 	print "\nStatistical Data\n";
-// 	print "----------------------------------\n";
-// 	for ($i = 0; $i < count($tracer->statData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->statKey[$i].": ".$tracer->statData[$i].$tracer->statSym[$i]."\n";
-// 	} else print "Cannot get Statistical Data\n";
-	
-// if ($tracer->getSettingData()) {
-// 	print "\nSettings Data\n";
-// 	print "----------------------------------\n";
-// 	for ($i = 0; $i < count($tracer->settingData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->settingKey[$i].": ".$tracer->settingData[$i].$tracer->settingSym[$i]."\n";
-// 	} else print "Cannot get Settings Data\n";
-
-// if ($tracer->getCoilData()) {
-// 	print "\nCoils Data\n";
-// 	print "----------------------------------\n";
-// 	for ($i = 0; $i < count($tracer->coilData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->coilKey[$i].": ".$tracer->coilData[$i]."\n";
-// 	} else print "Cannot get Coil Data\n";
-
-// if ($tracer->getDiscreteData()) {
-// 	print "\nDiscrete Data\n";
-// 	print "----------------------------------\n";
-// 	for ($i = 0; $i < count($tracer->discreteData); $i++)
-// 		print str_pad($i, 2, '0', STR_PAD_LEFT)." ".$tracer->discreteKey[$i].": ".$tracer->discreteData[$i]."\n";
-// 	} else print "Cannot get Discrete Data\n";
- ?>
+?>
